@@ -1,0 +1,4 @@
+ALTER TABLE weather
+ADD COLUMN country VARCHAR(250);
+ALTER TABLE weather
+ADD COLUMN  countryCode VARCHAR(3);

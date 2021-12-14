@@ -1,0 +1,2 @@
+ALTER TABLE weather
+ADD COLUMN wind NUMERIC (19,2)
