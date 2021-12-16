@@ -9,7 +9,9 @@ import com.gogoaren.indarra.serviceweatherapi.fetch.WeatherStatisticService;
 import com.gogoaren.indarra.serviceweatherapi.utils.CustomStringConverter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -28,8 +30,11 @@ public class WeatherController {
     WeatherEntityService weatherEntityService;
 
     @GetMapping(value = "/{city}")
-    public Weather getWeatherByCity(@PathVariable String city) {
-        return weatherService.getWeatherByCity(CustomStringConverter.stringConverterCity(city));
+    public ResponseEntity<Weather> getWeatherByCity(@PathVariable String city) {
+        return new ResponseEntity<>(
+                weatherService.getWeatherByCity(CustomStringConverter.stringConverterCity(city)),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping(value = "/topCity")
