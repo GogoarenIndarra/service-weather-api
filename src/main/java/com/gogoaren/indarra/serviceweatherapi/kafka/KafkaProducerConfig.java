@@ -39,12 +39,12 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, Weather> weatherKafkaTemplat() {
+    public KafkaTemplate<String, Weather> weatherKafkaTemplate() {
         return new KafkaTemplate<>(weatherProducerFactory());
     }
 
     @Bean
     public KafkaMessageSender kafkaMessageSender() {
-        return new KafkaMessageSender(weatherTopic, weatherKafkaTemplat());
+        return new KafkaMessageSender(weatherTopic, weatherKafkaTemplate());
     }
 }

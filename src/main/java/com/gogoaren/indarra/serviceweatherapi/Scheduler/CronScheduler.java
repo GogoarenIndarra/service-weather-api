@@ -32,6 +32,14 @@ public class CronScheduler {
 
     private void uploadWeather(String city) {
         var weather = weatherService.getWeatherByCity(city);
-        log.info("Weather for " + city + " at time: " + Instant.now() + " weather:  " + weather);
+        StringBuilder message = new StringBuilder()
+                .append("Weather for ")
+                .append(city)
+                .append(" at time: ")
+                .append(Instant.now())
+                .append(" weather:  ")
+                .append(weather);
+
+        log.info(message.toString());
     }
 }

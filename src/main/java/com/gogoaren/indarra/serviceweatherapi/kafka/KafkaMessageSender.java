@@ -17,7 +17,13 @@ public class KafkaMessageSender {
 
     public void sendMessage(Weather weather) {
 
-        log.info("Weather msg send: " + weather + " topic name: " + topicName);
+        StringBuilder message = new StringBuilder()
+                .append("Weather msg send: ")
+                .append(weather)
+                .append(" topic name: ")
+                .append(topicName);
+
+        log.info(message.toString());
 
         ListenableFuture<SendResult<String, Weather>> future =
                 kafkaTemplate.send(topicName, weather);
@@ -26,14 +32,25 @@ public class KafkaMessageSender {
 
             @Override
             public void onSuccess(SendResult<String, Weather> result) {
-                log.info("Sent message=[" + weather +
-                        "] with offset=[" + result.getRecordMetadata().offset() + "]");
+                StringBuilder message = new StringBuilder()
+                        .append("Sent message=[")
+                        .append(weather)
+                        .append("] with offset=[")
+                        .append(result.getRecordMetadata().offset())
+                        .append("]");
+
+                log.info(message.toString());
             }
 
             @Override
             public void onFailure(Throwable ex) {
-                log.error("Unable to send message=["
-                        + weather + "] due to : " + ex.getMessage());
+                StringBuilder message = new StringBuilder()
+                        .append("Unable to send message=[")
+                        .append(weather)
+                        .append("] due to : ")
+                        .append(ex.getMessage());
+
+                log.info(message.toString());
             }
         });
     }
