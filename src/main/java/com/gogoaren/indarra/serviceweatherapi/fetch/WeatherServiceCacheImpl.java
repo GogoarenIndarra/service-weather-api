@@ -29,8 +29,6 @@ public class WeatherServiceCacheImpl implements WeatherService {
     @Override
     public Weather getWeatherByCity(String city) {
 
-        // can be replaced with single line code, but log are missed
-        // return cacheWeatherMap.getOrDefault(city, getWeatherFromOenWeather(city));
         if (cacheWeatherMap.containsKey(city)) {
             log.info("weather from cache: " + city);
             return cacheWeatherMap.get(city);

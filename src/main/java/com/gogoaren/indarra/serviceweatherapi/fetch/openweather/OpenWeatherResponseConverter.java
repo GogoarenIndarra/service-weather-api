@@ -19,9 +19,9 @@ public class OpenWeatherResponseConverter {
                 .build();
     }
 
-    private BigDecimal convertTemperature(double kelvineTemp) {
+    private BigDecimal convertTemperature(double kelvinTemp) {
 
-        BigDecimal a = new BigDecimal(kelvineTemp);
+        BigDecimal a = new BigDecimal(kelvinTemp);
         BigDecimal b = new BigDecimal(273.15);
         return a.subtract(b).setScale(2, RoundingMode.CEILING);
     }
