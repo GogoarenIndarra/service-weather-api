@@ -16,15 +16,15 @@ public class WeatherEntityService implements Serializable {
     private final WeatherEntityRepository weatherEntityRepository;
 
     public void saveEntity(final WeatherEntity weatherEntity) {
-        log.info("weather from db: " + weatherEntity);
+        log.info("weather from db: {}", weatherEntity);
         weatherEntityRepository.save(weatherEntity);
     }
 
-    public Optional<WeatherEntity> findLatestStoredTemperature(String cityName) {
+    public Optional<WeatherEntity> findLatestStoredTemperature(final String cityName) {
         return weatherEntityRepository.findLatestCityWeather(cityName);
     }
 
-    public List<WeatherEntity> findTopWarmestCity(int numberOfRecords) {
+    public List<WeatherEntity> findTopWarmestCity(final int numberOfRecords) {
         return weatherEntityRepository.findTopWarmestCity(numberOfRecords);
     }
 

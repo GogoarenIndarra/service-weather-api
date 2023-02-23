@@ -2,7 +2,7 @@ package com.gogoaren.indarra.serviceweatherapi.fetch;
 
 import com.gogoaren.indarra.serviceweatherapi.data.weather.WeatherEntity;
 import com.gogoaren.indarra.serviceweatherapi.data.weather.WeatherEntityService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -14,11 +14,10 @@ import java.util.stream.Collectors;
 
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class WeatherStatisticServiceImpl implements WeatherStatisticService {
 
     private final WeatherEntityService weatherEntityService;
-
 
     @Override
     public Map<String, BigDecimal> findWarmestCity() {
@@ -46,16 +45,16 @@ public class WeatherStatisticServiceImpl implements WeatherStatisticService {
     }
 
     @Override
-    public Map<String, List<String>> findCitiesFromCountry(String countryCode) {
+    public Map<String, List<String>> findCitiesFromCountry(final String countryCode) {
 
-        Set<String> distinctCity = weatherEntityService.selectAllForStreamPractice()
+        final Set<String> distinctCity = weatherEntityService.selectAllForStreamPractice()
                 .stream()
                 .filter(w -> countryCode.equals(w.getCountryCode()))
                 .map(WeatherEntity::getCity)
                 .collect(Collectors.toSet());
-
-        Map<String, List<String>> result = new HashMap<>();
+        final Map<String, List<String>> result = new HashMap<>();
         result.put(countryCode, List.copyOf(distinctCity));
+
         return result;
     }
 
@@ -70,6 +69,4 @@ public class WeatherStatisticServiceImpl implements WeatherStatisticService {
     public Map<String, BigDecimal> findMaxTemperatureForAllCities() {
         return null;
     }
-
-
 }

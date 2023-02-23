@@ -1,22 +1,25 @@
 package com.gogoaren.indarra.serviceweatherapi.Scheduler;
 
 import com.gogoaren.indarra.serviceweatherapi.fetch.WeatherService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.Clock;
 import java.time.Instant;
 
 import static com.gogoaren.indarra.serviceweatherapi.utils.RandomCitiesGenerator.getRandomCity;
 
-@Component
 @Slf4j
+@Component
 public class CronScheduler {
 
     @Autowired
     private WeatherService weatherService;
+    @Autowired
+    private Clock clock;
 
     @Scheduled(fixedDelayString = "${weather.schedule.update.ms}")
     private void uploadWeatherScheduleTask() {
@@ -30,16 +33,8 @@ public class CronScheduler {
         uploadWeather(getRandomCity());
     }
 
-    private void uploadWeather(String city) {
-        var weather = weatherService.getWeatherByCity(city);
-        StringBuilder message = new StringBuilder()
-                .append("Weather for ")
-                .append(city)
-                .append(" at time: ")
-                .append(Instant.now())
-                .append(" weather:  ")
-                .append(weather);
-
-        log.info(message.toString());
+    private void uploadWeather(final String city) {
+        final var weather = weatherService.getWeatherByCity(city);
+        log.info("Time: {}, Weather for {}: {}", Instant.now(clock), city, weather);
     }
 }

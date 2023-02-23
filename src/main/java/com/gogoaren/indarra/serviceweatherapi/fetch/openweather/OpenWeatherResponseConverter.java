@@ -8,7 +8,8 @@ import java.math.RoundingMode;
 
 public class OpenWeatherResponseConverter {
 
-    public Weather convert(OpenWeatherResponse openWeatherResponse) {
+    public Weather convert(final OpenWeatherResponse openWeatherResponse) {
+
         return Weather.builder()
                 .city(openWeatherResponse.getName())
                 .temperature(convertTemperature(openWeatherResponse.getMain().getTemp()))
@@ -19,11 +20,10 @@ public class OpenWeatherResponseConverter {
                 .build();
     }
 
-    private BigDecimal convertTemperature(double kelvinTemp) {
+    private BigDecimal convertTemperature(final double kelvinTemp) {
+        final BigDecimal a = BigDecimal.valueOf(kelvinTemp);
+        final BigDecimal b = BigDecimal.valueOf(273.15);
 
-        BigDecimal a = new BigDecimal(kelvinTemp);
-        BigDecimal b = new BigDecimal(273.15);
         return a.subtract(b).setScale(2, RoundingMode.CEILING);
     }
-
 }

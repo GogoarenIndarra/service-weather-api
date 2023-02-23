@@ -3,13 +3,12 @@ package com.gogoaren.indarra.serviceweatherapi.fetch.openweather;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gogoaren.indarra.serviceweatherapi.TestUtils;
 import com.gogoaren.indarra.serviceweatherapi.fetch.Weather;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OpenWeatherResponseConverterTest {
 
@@ -27,7 +26,7 @@ public class OpenWeatherResponseConverterTest {
                 .countryCode("US")
                 .build();
 
-        assertEquals(expectedWeather, openWeatherResponseConverter.convert(createOpenWeatherResponse()));
+        Assertions.assertEquals(expectedWeather, openWeatherResponseConverter.convert(createOpenWeatherResponse()));
     }
 
     private OpenWeatherResponse createOpenWeatherResponse() throws Exception {
