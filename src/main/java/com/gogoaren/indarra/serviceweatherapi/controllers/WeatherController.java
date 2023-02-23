@@ -27,7 +27,7 @@ import static com.gogoaren.indarra.serviceweatherapi.utils.CustomStringConverter
 
 @RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, path = "/api/weather")
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Slf4j
 public class WeatherController {
 
