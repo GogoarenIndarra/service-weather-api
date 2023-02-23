@@ -1,8 +1,12 @@
 package com.gogoaren.indarra.serviceweatherapi.data.weather;
 
 import com.gogoaren.indarra.serviceweatherapi.fetch.Weather;
-import lombok.*;
-import org.hibernate.Hibernate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -35,8 +39,7 @@ public class WeatherEntity implements Serializable {
     private String country;
     private String countryCode;
 
-
-    public WeatherEntity(Weather weather) {
+    public WeatherEntity(final Weather weather) {
         this.uuid = UUID.randomUUID();
         this.created = Instant.now();
         this.city = weather.getCity();
@@ -48,15 +51,18 @@ public class WeatherEntity implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        WeatherEntity that = (WeatherEntity) o;
-        return uuid != null && Objects.equals(uuid, that.uuid);
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof final WeatherEntity weatherEntity)) {
+            return false;
+        }
+        return Objects.equals(uuid, weatherEntity.uuid);
     }
 
     @Override
     public int hashCode() {
-        return 0;
+        return Objects.hash(uuid);
     }
 }

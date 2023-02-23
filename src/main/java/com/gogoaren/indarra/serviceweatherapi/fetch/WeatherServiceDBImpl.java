@@ -6,7 +6,7 @@ import com.gogoaren.indarra.serviceweatherapi.fetch.openweather.OpenWeatherFetch
 import com.gogoaren.indarra.serviceweatherapi.fetch.openweather.OpenWeatherResponse;
 import com.gogoaren.indarra.serviceweatherapi.fetch.openweather.OpenWeatherResponseConverter;
 import com.gogoaren.indarra.serviceweatherapi.kafka.KafkaMessageSender;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +19,7 @@ import java.util.UUID;
 
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 @ConditionalOnProperty(name = "whether.service.implementation.type", havingValue = "db.migration")
 public class WeatherServiceDBImpl implements WeatherService {
@@ -31,37 +31,36 @@ public class WeatherServiceDBImpl implements WeatherService {
     public static Long timeForWeatherExpire;
 
     @Autowired
-    public void setTimeForWeatherExpire(@Value("${weather.expiration.time.ms}") Long value) {
+    public void setTimeForWeatherExpire(@Value("${weather.expiration.time.ms}") final Long value) {
         timeForWeatherExpire = value;
     }
 
     @Override
-    public Weather getWeatherByCity(String city) {
-
-        Optional<WeatherEntity> optionalWeatherEntity =
-                weatherEntityService.findLatestStoredTemperature(city);
+    public Weather getWeatherByCity(final String city) {
+        final Optional<WeatherEntity> optionalWeatherEntity = weatherEntityService.findLatestStoredTemperature(city);
         if (optionalWeatherEntity.isPresent() && isWeatherActual(optionalWeatherEntity.get())) {
-
-            log.info("weather from db: " + optionalWeatherEntity);
-            return getWeather(optionalWeatherEntity);
+            log.info("weather from db: {}", optionalWeatherEntity);
+            return getWeather(optionalWeatherEntity.get());
         }
+
         return geWeatherDBimpl(city);
     }
 
-    private Weather geWeatherDBimpl(String city) {
-        log.info("fetching weather for: " + city);
-        OpenWeatherResponse openWeatherResponse = openWeatherFetcher.fetchWeatherByCityName(city);
-        log.info("open weather response: " + openWeatherResponse);
-        Weather weather = converter.convert(openWeatherResponse);
-        WeatherEntity weatherEntity = getWeatherEntity(weather);
-        log.info("save weather entity: " + weatherEntity.toString());
+    private Weather geWeatherDBimpl(final String city) {
+        log.info("fetching weather for: {}", city);
+        final OpenWeatherResponse openWeatherResponse = openWeatherFetcher.fetchWeatherByCityName(city);
+        log.info("open weather response: {}", openWeatherResponse);
+        final Weather weather = converter.convert(openWeatherResponse);
+        final WeatherEntity weatherEntity = getWeatherEntity(weather);
+        log.info("save weather entity: {}", weatherEntity.toString());
         weatherEntityService.saveEntity(weatherEntity);
         kafkaMessageSender.sendMessage(weather);
+
         return weather;
     }
 
+    public WeatherEntity getWeatherEntity(final Weather weather) {
 
-    public WeatherEntity getWeatherEntity(Weather weather) {
         return WeatherEntity.builder()
                 .uuid(UUID.randomUUID())
                 .created(Instant.now())
@@ -75,8 +74,8 @@ public class WeatherServiceDBImpl implements WeatherService {
     }
 
 
-    public Weather getWeather(Optional<WeatherEntity> optionalWeatherEntity) {
-        WeatherEntity weatherEntity = optionalWeatherEntity.get();
+    public Weather getWeather(final WeatherEntity weatherEntity) {
+
         return Weather.builder()
                 .humidity(weatherEntity.getHumidity())
                 .city(weatherEntity.getCity())
@@ -87,12 +86,10 @@ public class WeatherServiceDBImpl implements WeatherService {
                 .build();
     }
 
-
-    public boolean isWeatherActual(WeatherEntity weatherEntity) {
-
-        long time = weatherEntity.getCreated().toEpochMilli();
-        long ct = Instant.now().toEpochMilli();
-        long df = Math.abs(ct - time);
+    public boolean isWeatherActual(final WeatherEntity weatherEntity) {
+        final long time = weatherEntity.getCreated().toEpochMilli();
+        final long ct = Instant.now().toEpochMilli();
+        final long df = Math.abs(ct - time);
 
         return df < timeForWeatherExpire;
     }

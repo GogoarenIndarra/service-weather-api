@@ -1,18 +1,19 @@
 package com.gogoaren.indarra.serviceweatherapi.fetch.openweather;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Duration;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OpenWeatherFetcher {
 
-    private WebClient client;
-    private String apiKey;
+    private final WebClient client;
+    private final String apiKey;
 
-    public OpenWeatherResponse fetchWeatherByCityName(String cityName) {
+    public OpenWeatherResponse fetchWeatherByCityName(final String cityName) {
 
         return client.get()
                 .uri(uriBuilder -> uriBuilder.path("/")
@@ -23,11 +24,10 @@ public class OpenWeatherFetcher {
                 .retrieve()
                 .bodyToMono(OpenWeatherResponse.class)
                 .share()
-                .block(Duration.ofSeconds(20));
+                .block(Duration.ofSeconds(5));
     }
 
-
-    public OpenWeatherResponse fetchWeatherByCityLocation(double lat, double lng) {
+    public OpenWeatherResponse fetchWeatherByCityLocation(final double lat, final double lng) {
 
         return client.get()
                 .uri(uriBuilder -> uriBuilder.path("/")
@@ -40,5 +40,4 @@ public class OpenWeatherFetcher {
                 .bodyToMono(OpenWeatherResponse.class)
                 .block(Duration.ofSeconds(20));
     }
-
 }
