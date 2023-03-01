@@ -1,6 +1,5 @@
 package com.gogoaren.indarra.serviceweatherapi.fetch.openweather;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;

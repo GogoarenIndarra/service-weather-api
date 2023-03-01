@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.Clock;
+import java.time.Instant;
 
 @ControllerAdvice
 @RequiredArgsConstructor
 public class RestControllerHandler {
-
     private final Clock clock;
 
     @ExceptionHandler(RecordNotFoundException.class)
@@ -22,7 +22,7 @@ public class RestControllerHandler {
                 .message(exception.getMessage())
                 .status(HttpStatus.NOT_FOUND.value())
                 .path(request.getRequestURI())
-                .time(clock.instant())
+                .time(Instant.now(clock))
                 .build(), HttpStatus.NOT_FOUND);
     }
 }
