@@ -1,12 +1,12 @@
 package com.gogoaren.indarra.serviceweatherapi;
 
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gogoaren.indarra.serviceweatherapi.data.weather.WeatherEntity;
-import org.springframework.util.Assert;
+import com.gogoaren.indarra.serviceweatherapi.fetch.openweather.OpenWeatherResponse;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -23,9 +23,17 @@ public class TestUtils {
                 .build();
     }
 
-    public static String readFileAsString(String file) throws Exception {
-        Assert.notNull(file, "file does not exist");
-        return new String(Files.readAllBytes(Paths.get(file)));
+    public static OpenWeatherResponse createOpenWeatherResponse() throws Exception {
+        ClassLoader classLoader = TestUtils.class.getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream("inputForTest_weatherResponseConverter.json");
+
+        if (inputStream == null) {
+            throw new IllegalArgumentException("file not found! " + "inputForTest_weatherResponseConverter.json");
+        } else {
+            String jsonResponse = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(jsonResponse, OpenWeatherResponse.class);
+        }
     }
 
 

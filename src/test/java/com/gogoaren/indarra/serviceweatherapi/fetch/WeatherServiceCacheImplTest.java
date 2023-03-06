@@ -24,7 +24,7 @@ class WeatherServiceCacheImplTest {
     private WeatherServiceCacheImpl serviceCache;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         serviceCache = new WeatherServiceCacheImpl(openWeatherFetcher, converter, kafkaMessageSender);
         Mockito.when(openWeatherFetcher.fetchWeatherByCityName(anyString())).thenReturn(openWeatherResponse);
         Mockito.when(converter.convert(openWeatherResponse)).thenReturn(mockWeather);
@@ -32,7 +32,7 @@ class WeatherServiceCacheImplTest {
 
 
     @Test
-    public void shouldCallExternalServiceOneTimeWhenTwoCallsForTheSameCityMadeTwice() {
+    void shouldCallExternalServiceOneTimeWhenTwoCallsForTheSameCityMadeTwice() {
         //when:
         serviceCache.getWeatherByCity("London");
         serviceCache.getWeatherByCity("London");
@@ -43,7 +43,7 @@ class WeatherServiceCacheImplTest {
     }
 
     @Test
-    public void shouldCallExternalServiceTwiceWhenTwoCallsForDifferentCityMade() {
+    void shouldCallExternalServiceTwiceWhenTwoCallsForDifferentCityMade() {
         //when:
         serviceCache.getWeatherByCity("London");
         serviceCache.getWeatherByCity("Prague");

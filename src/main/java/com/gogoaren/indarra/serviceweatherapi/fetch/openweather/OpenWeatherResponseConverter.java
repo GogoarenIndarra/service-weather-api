@@ -24,6 +24,6 @@ public class OpenWeatherResponseConverter {
         final BigDecimal a = BigDecimal.valueOf(kelvinTemp);
         final BigDecimal b = BigDecimal.valueOf(273.15);
 
-        return a.subtract(b).setScale(2, RoundingMode.CEILING);
+        return a.subtract(b).setScale(1, RoundingMode.CEILING);
     }
 }

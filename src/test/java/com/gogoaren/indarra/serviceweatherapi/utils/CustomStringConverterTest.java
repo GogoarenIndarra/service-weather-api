@@ -15,7 +15,7 @@ class CustomStringConverterTest {
 
     @ParameterizedTest
     @MethodSource("input")
-    public void stringConverterCity_shouldReturnTrue(String inputStr, String outputStr) {
+    void stringConverterCity_shouldReturnTrue(String inputStr, String outputStr) {
         assertEquals(outputStr, CustomStringConverter.stringConverterCity(inputStr));
     }
 
