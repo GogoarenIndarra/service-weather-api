@@ -28,8 +28,6 @@ public class CronScheduler {
     @Scheduled(cron = "${weather.schedule.cron.ms}")
     private void uploadWeatherScheduleSpainCities() {
         uploadWeather(getRandomCity());
-        uploadWeather(getRandomCity());
-        uploadWeather(getRandomCity());
     }
 
     private void uploadWeather(final String city) {

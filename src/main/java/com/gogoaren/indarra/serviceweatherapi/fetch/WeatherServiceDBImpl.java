@@ -21,7 +21,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@ConditionalOnProperty(name = "whether.service.implementation.type", havingValue = "db.migration")
+@ConditionalOnProperty(name = "whether.service.implementation.type", havingValue = "db")
 public class WeatherServiceDBImpl implements WeatherService {
 
     private final OpenWeatherFetcher openWeatherFetcher;
